@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"  ></ion-icon>
+    </button>
+    <ion-title>Rational Simplex App</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>LP Model</h3>
+
+  <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
+  <ion-label>Objective function</ion-label>
+  <!--<ion-icon name="play"></ion-icon>-->
+  <ion-list>
+    
+    <ion-item>
+      <ion-input type="number" placeholder="Number of variables" max=30 min=2 [(ngModel)]="vari"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="number" placeholder="Number of constraints" max=30 min=2 [(ngModel)]="vari1"></ion-input>
+    </ion-item>
+
+  </ion-list>
+  <p> 
+  <button ion-button color="primary"  round (click)="ionicGo()"   icon-end > Next
+    <ion-icon name='arrow-forward'></ion-icon></button>
+ 
+
+</p>
+
+
+</ion-content>

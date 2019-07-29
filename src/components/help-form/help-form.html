@@ -1,0 +1,238 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Simplex Solving</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card>
+
+    <ion-card-header>
+      <ion-label>Variables:</ion-label>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="row">
+        <div class="col">
+          <button ion-button color="secondory" round (click)="AddVariable()">Add</button>
+        </div>
+        <div class="col">
+          <button ion-button color="secondory" round (click)="remoVevariable(idx1)">Remove</button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-label>Constraints:</ion-label>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="row">
+        <div class="col">
+          <button ion-button color="secondory" round (click)="AddContraintes()">Add</button>
+        </div>
+        <div class="col">
+          <button ion-button color="secondory" round (click)="removeContraintes(idx)">Remove</button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+
+
+  <div class="row">
+    <div class="col">
+      <ion-label> Objective: </ion-label>
+    </div>
+    <div class="col">
+      <ion-list>
+        <!-- <ion-list-header>
+          Action
+        </ion-list-header> -->
+        <ion-item>
+          <ion-label>{{aff}}</ion-label>
+          <ion-select [(ngModel)]="aff" interface="popover">
+            <ion-option value="Max" selected>Max</ion-option>
+            <ion-option value="Min">Min </ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+  <span>
+    <!--  <br> -->
+    <!-- <ion-label>Fonction</ion-label> -->
+    <table>
+      <tr>
+        <th *ngFor="let att1 of cArray; let i=index;">C{{i+1}}</th>
+      </tr>
+      <tbody>
+        <tr>
+          <td *ngFor="let att1 of cArray ; let idx1 = index;">
+           
+            <ion-input type="number" placeholder="C {{[idx1+1]}}" [(ngModel)]="cArray[idx1]"></ion-input>
+
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </span>
+  <br>
+  <ion-label>Contraintes</ion-label>
+  <div>
+    <table>
+      <tr>
+        <th>#</th>
+        <th *ngFor="let att1 of cArray; let i=index;">X{{i+1}}</th>
+        <th>Sign</th>
+        <th>b</th>
+      </tr>
+      <tbody>
+        <tr *ngFor="let att of bArray; let idx = index ; ">
+          <td>{{att.label}}{{idx+1}}</td>
+          <td *ngFor="let att1 of cArray ;let i = index ;    ">
+
+            <ion-input type="number" placeholder="A [{{[idx]}} ][{{[i]}}]" [(ngModel)]="A_matrix[idx][i]"></ion-input>
+
+          </td>
+
+          <td>
+            <select id="sign_4" class="form-control min_width_in">
+              <option value="&lt;">≤ &nbsp; &nbsp; &nbsp;</option>
+              <option class="block" value="&gt;" selected="selected">≥ &nbsp;</option>
+              <option value="=">= &nbsp;</option>
+            </select>
+          </td>
+          <td>
+            <ion-input type="number" placeholder="nbr" [(ngModel)]="bArray[idx]"></ion-input>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+  <div>
+
+
+    <div class="row">
+      <div class="col">
+        <ion-label> Tableau mode: </ion-label>
+      </div>
+      <div class="col">
+        <ion-list>
+          <!-- <ion-list-header>
+              Action
+            </ion-list-header> -->
+          <ion-item>
+            <ion-label>{{rest}}</ion-label>
+            <ion-select [(ngModel)]="rest" interface="popover">
+              <ion-option value="fraction">Fraction</ion-option>
+              <ion-option value="decimal" selected>Decimal </ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+
+    <button ion-button color="primary" (click)="cal()" icon-start>
+      <ion-icon name='flash'></ion-icon> LP Sove
+    </button>
+
+   
+  </div>
+
+
+ <div *ngIf="MINIMIZE">
+  <div [innerHTML]="this.mySimplex.getOptimalSol()"></div>
+
+  <!-- <ng-container *ngFor="let item of this.mySimplex.getOptimalSol()">
+    <ion-list>
+      <ion-item>
+        {{item}}
+      </ion-item>
+    </ion-list>
+  </ng-container> -->
+</div>
+
+
+<!----->
+<div *ngIf="MAXIMIZE">
+  <div [innerHTML]="this.mySimplex.getOptimalSol()"></div>
+
+  <!-- <ng-container *ngFor="let item of this.mySimplex.getOptimalSol()">
+    <ion-list>
+      <ion-item>
+        {{item}}
+      </ion-item>
+    </ion-list>
+  </ng-container> -->
+</div>
+
+
+<!-- <div *ngIf="existSolution1">
+  <h2>Solving time: {{solvingTime}}</h2>
+</div> -->
+
+<div >
+
+  <ng-container *ngFor="let tableau of this.mySimplex.tableauList; let idx = index ; ">
+    <div class="row">
+      <h4><strong>Simplex Tableau {{idx+1}}</strong></h4>
+    </div>
+    <div class="row">
+      <table class="tabs">
+        <tbody class="item">
+          <tr>
+            <th *ngFor="let elt of mySimplex.header">{{elt}}</th>
+          </tr>
+          <tr *ngFor="let row of  tableau"><br><br>
+            <!-- <td *ngFor="let cols of row  "> {{cols | number}} <br></td> -->
+            <td *ngFor="let cols of row  "> {{cols}} <br></td>
+          </tr>
+
+          <tr height=20px></tr>
+        </tbody>
+      </table>
+    </div>
+ 
+  
+  </ng-container>
+</div>
+
+<div > 
+
+  <ng-container *ngFor="let tableau of this.mySimplex_fraction.tableauList_fraction; let idx = index ; ">
+    <div class="row">
+      <h2><strong>Simplex Tableau {{idx+1}}</strong></h2>
+    </div>
+    <div class="row">
+      <table class="tabs">
+        <tbody class="item">
+          <tr>
+            <th *ngFor="let elt of mySimplex_fraction.header_fraction">{{elt}}</th>
+          </tr>
+          <tr *ngFor="let row of  tableau"><br><br>
+            <td *ngFor="let cols of row  "> {{cols}} <br></td>
+          </tr>
+          <tr height=20px></tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </ng-container>
+</div>
+  
+  </ion-content>
