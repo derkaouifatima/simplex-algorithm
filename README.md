@@ -5,7 +5,11 @@ Ionic Framework is an open source UI toolkit for building performant, high-quali
 # Install the Ionic CLI : 
 $ npm install -g @ionic/cli
 # Run the App :
+
 $ ionic start Project tabs
-$ cd Project 
-$ ionic 
+
+$  cd Project
+
+$ ionic serve
+
 
